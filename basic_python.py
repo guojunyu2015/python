@@ -220,7 +220,55 @@ def add_end(l=[]):
 	l.append('end')
 	return l
 
-#下面为函数调用部分
+#可变参数函数,可变参数函数为传入参数个数可变的函数,例如下面的函数用于求传入整数数组的和,
+#在可变参数内部,函数接收到的是一个tuple值
+def calc_list(numbers):
+	#本函数不是可变参数函数,输入参数numbers为一个list
+	sum = 0
+	for i in numbers:
+		sum = sum + i
+	
+	return sum
+
+def calc_val(*numbers):
+	#本函数为可变参数函数,只是在输入参数前加了个*
+	sum = 0
+	for i in numbers:
+		sum = sum + i
+	
+	return sum
+
+#关键字参数,关键字参数函数和可变参数函数的区别为关键字参数会将传入的值作为一个dict变量,声明时在参数前有两个*
+def person(name,age,**kw):
+	#在该函数中,name和age为必选参数,kw为可选参数
+	print('name:',name,'age:',age,'other:',kw)
+
+#命名关键字参数
+#对于关键字参数,函数调用者可以传入任何不受限制的关键字参数,命名关键字参数可以限制关键字的名字
+def person_name(name,age,*,city,job):
+	#本函数中,name和age为必选参数,city和job为关键字名称,该函数也只能接受这两个额外的关键字参数
+	print('name',name,'age',age,'city',city,'job',job)
+
+#下面函数调用为正确格式
+#person_name('Kobe',30,job = 'baskeyball player',city = 'Los')
+
+#下面函数调用错误,必须传入job和city两个关键字的值
+#person_name('Kobe',30)
+
+#下面的函数调用错误,person_name函数只接受关键字job和city
+#person_name('Tracy',30,job = 'baskeyball player',country = 'American')
+
+
+#如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符*了
+def person(name, age, *args, city, job):
+    print(name, age, args, city, job)
+
+#命名关键字参数也可以使用默认参数,有了默认参数的关键字就可以不用传值了
+def person_default(name,age,*,city = 'Beijing',job = 'IT'):
+	print(name,age,city,job)
+
+person_default('Kevin',29)
+
 #io_test()
 #list_test()
 #tuple_test()
@@ -236,6 +284,19 @@ def add_end(l=[]):
 #print('power_deft(2,4) = %d' %(power_deft(2,4)))
 
 #print(add_end([1,2,3,4]))
-print(add_end([]))
-print(add_end([]))
+#print(add_end([]))
+#print(add_end([]))
+
+#可变参数函数测试
+#print(calc_list([1,2,5,67,9]))
+#numbers = [1,2,3,4,5,6,7]
+#print(calc_list(numbers))
+
+#print(calc_val(1,4,56,6))
+#print(calc_val(*numbers))
+
+#关键字函数测试
+#person('guoguo','30')		#输出为 name: guoguo age: 30 other: {}
+#person('Jams','33',job = 'Calas',country = 'American') #输出为 name: Jams age: 33 other: {'country': 'American', 'job': 'Calas'}
+
 
