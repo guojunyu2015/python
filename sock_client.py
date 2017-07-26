@@ -3,9 +3,9 @@ import socket
 import time
 import datetime
 
-#端口号
+#IP地址及端口号
 ip_addr = '127.0.0.1'
-port_no = 29201
+port_no = 8000 
 
 timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 
@@ -37,8 +37,9 @@ print('发送信息:[%s]' %send_msg)
 #发送数据
 s.send(send_msg.encode('gbk'))
 
-#接收应答数据
+#接收应答数据,应答数据存储在list变量中.
 buffer = []
+
 while True:
 	d = s.recv(1024)
 	if d:
@@ -46,6 +47,8 @@ while True:
 	else:
 		break
 
-print('应答信息:[%s]' %(bytes.decode(buffer)))
+#调用bytes类的join方法将list变量中的bytes内容保存到rcv_str中
+rcv_str = b''.join(buffer)
+print('应答信息:[%s]' %(rcv_str.decode('utf-8')))
 
 s.close()
