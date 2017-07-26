@@ -64,7 +64,15 @@ def class_limit():
 	bart = Student('Bart Simpson', '98')
 	bart.print_score()
 	
-
+	#以下语句会运行错误,私有变量无法在外部直接访问
+	#print(bart.__name)
+	
+	#以下语句运行会通过,但是并不是给Student对象中的__name属性赋值,因为python在类外部会将私有变量修改为_Student__name,以下语句
+	#相当于给对象bart新增了一个__name属性,和结构体中的私有变量不是一个变量,通过下面的两次打印处理可以看出区别
+	bart.__name = '123'
+	print(bart.__name)
+	bart.print_score()
+	
 #class_limit()
 
 def class_sub():
@@ -103,4 +111,96 @@ def class_sub():
 	animal = Animal()
 	run_time(animal)
 
-class_sub()
+#class_sub()
+
+
+def get_object_info():
+	#获取对象信息,即根据对象判断对象的类型以及这个对象有哪些方法
+	
+	#使用type函数判断
+	print(type(123))		#输出为:<class 'int'>
+	print(type('123'))		#输出为:<class 'str'>
+	print(type(12.1))		#输出为:<class 'float'>
+	
+	print(type(123)==int)	#输出为:True
+	print(type('123')==str)	#输出为:True
+	
+	#使用type函数判断一个对象是否是函数
+	import types
+	def fn():
+		pass
+	
+	print(type(fn) == types.FunctionType)	#types.FunctionType为常量,输出为True
+	print(type(abs)==types.BuiltinFunctionType)
+	
+	#使用isinstance()函数,在上面的函数中已经有练习
+	
+	#使用dir()函数,dir函数可以获得一个对象所有的属性和方法
+	
+	#获取str对象的所有属性和方法
+#	print(dir('123'))
+	
+	
+#get_object_info()
+
+
+def set_object_attr():
+	#dir函数配合getattr(),setattr(),hasattr()可以直接操作一个对象的状态
+	class MyObject(object):
+		
+		def __init__(self):
+			self.x = 9
+		
+		def power(self):
+			return self.x * self.x
+	
+	obj = MyObject()
+	
+	#测试obj对象有没有x属性
+	print(hasattr(obj,'x'))		#输出为True
+	print(getattr(obj,'x'))		#获取属性x,输出为9
+	
+	#测试obj对象有没有y属性
+	print(hasattr(obj,'y'))		#输出为False
+	setattr(obj,'y',19)			#新增属性y,值为19
+	print(getattr(obj,'y'))
+	
+	print(obj.y)				#输出为19,属性y已经添加成功
+	
+	#判断对象是否有power方法
+	print(hasattr(obj, 'power'))	#输出为True
+	
+	#获取方法power
+	print(getattr(obj, 'power'))
+	
+	fn = getattr(obj, 'power') # 获取属性'power'并赋值到变量fn
+	print(fn())	#输出为81
+	
+#set_object_attr()
+
+def instance_attr():
+	#实例属性和类属性,以下面的类定义为例
+	class Student(object):
+		name = 'Name'		#name为类属性,归Student类所有,类的所有实例都可以访问到
+		def __init__(self,job):
+			self.job = job
+	
+	s = Student('study')
+	s.score = 90
+	
+	#在上面的类定义和实例化中,对象s有两个属性,一个为在类定义中通过self生成的属性job,另外一个为实例自身新增的属性score,
+	#而job属性则为类定义
+	
+	print(s.name)			#打印name属性,因为实例并没有name属性,所以会继续查找class的name属性
+	print(Student.name)		#打印类的name属性
+	
+	s.name = 'Michael'		#给实例绑定name属性
+	print(s.name)			#由于实例属性优先级比类属性高,因此,它会屏蔽掉类的name属性,输出为Michael,而不是Name
+	
+	del s.name				#如果删除实例的name属性
+	print(s.name)			#再次调用s.name,由于实例的name属性没有找到,类的name属性就显示出来了
+	
+instance_attr()
+	
+	
+		
